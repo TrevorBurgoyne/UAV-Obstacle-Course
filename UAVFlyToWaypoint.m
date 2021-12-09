@@ -22,9 +22,9 @@
 function [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, wp, p)
     
     % Call UAV Steering using the waypoint to generate steering functions
-    [tSeg, vCmdFun, hCmdFun, psiCmdfun] = UAVSteering(x0, wp, p)
+    [tSeg, vCmdFun, hCmdFun, psiCmdFun] = UAVSteering(x0, wp, p);
 
     % Call UAVSim on the steering functions to simulate the UAV
-    [tSeg, xSeg, uSeg, cmdSeg] = UAVSim(tSeg, x0, p, vCmdFun, hCmdFun, psiCmdFun)
+    [tSeg, xSeg, uSeg, cmdSeg] = UAVSim(tSeg, x0, p, vCmdFun, hCmdFun, psiCmdFun);
     
 end
