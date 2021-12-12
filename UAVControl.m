@@ -1,12 +1,13 @@
-function [Lbar, phi, Tbar] = UAVControl(state0,state0Dot,stateCmd, K)
+function [Lbar, phi, Tbar] = UAVControl(state0,state0Dot,stateCmd,stateCmdDot, K)
 % Compute Lift (Lbar), bank angle (phi) and Thrust (Tbar) required for
 % a commanded state. 
 % INPUTS:
-% state0    (5,1)           inital state
+% state0    (6,1)           inital state
 %                           [v; h; psi; xe; yn]
 %                           v = speed (m/s)
 %                           h = UAV altitude, (m)
 %                           psi = UAV air-relative heading (CW from North), 0 to 2pi (rad)
+%                           gamma = flight path angle (rad)
 %                           xe = east position (m)
 %                           yn = north position (m)
 %
@@ -26,7 +27,7 @@ function [Lbar, phi, Tbar] = UAVControl(state0,state0Dot,stateCmd, K)
 %                           xnCmd = east position commanded (m)
 %                           ynCmd = north position commanded (m)
 %
-% stateCmdDot (5,1)         commanded state derivatives 
+% stateCmdDot (3,1)         commanded state derivatives 
 %                           vCmdDot = acceleration commanded (m/s/s)
 %                           hCmdDot = vCmd (m/s)
 %                           psiCmdDot = angular velocity commanded (rad/s)
@@ -43,6 +44,14 @@ function [Lbar, phi, Tbar] = UAVControl(state0,state0Dot,stateCmd, K)
 % Tebar     (1,1)           Normalized Thrust required, ()
 
 %% Demo
+if nargin == 0
+    disp('Demo Mode')
+    state0 = [ 1;  1; 0; 0; 0; 0];
+    state0Dot = [ 1; 1; pi/4; 1; 2];
+    stateCmd = [ 2;  2; 0; 3; 4];
+    stateCmdDot = [ 1;  1; pi/4; 1; 1];
+    K = [ 1; 1; 1; 1; 1; 1];
+end
 
 %% Constants
 % gravitational acceleration on Earth
@@ -57,16 +66,9 @@ etaZeta = 0; % along-track position uncertainty (m)
 etaEta = 0; % cross track position uncertainty (m)
 
 %% Input Checking
-% check inputs are correct type and size
-if ~isnumeric(vCmd) || max(size(vCmd)) > 1
-    disp('vCmd must be a scalar number')
-end
-if ~isnumeric(hCmd) || max(size(hCmd)) > 1
-    disp('hCmd must be a scalar number')
-end
-if ~isnumeric(psiCmd) || psiCmd > 2*pi || psiCmd < 0
-    disp('psiCmd must be a scalar number between 0 and 2pi')
-end
+
+% input checking for state vectors
+
 if max(size(K)) ~= 6 || min(size(K)) ~= 1
     disp('K must be in format [Kh1; Kh2; KL1; KL2; KN1; KN2]')
 end
@@ -82,8 +84,9 @@ end
 v = state0(1,1);
 h = state0(2,1);
 psi = state0(3,1);
-xe = state0(4,1);
-yn = state0(5,1);
+gamma = state0(4,1);
+xe = state0(5,1);
+yn = state0(6,1);
 
 % pull apart state0Dot vector
 vDot = state0Dot(1,1);
@@ -91,6 +94,7 @@ hDot = state0Dot(2,1);
 psiDot = state0(3,1);
 xeDot = state0(4,1);
 ynDot = state0(5,1);
+
 
 % pull apart stateCmd
 vCmd = stateCmd(1,1);
@@ -103,8 +107,7 @@ ynCmd = stateCmd(5,1);
 vCmdDot = stateCmd(1,1);
 hCmdDot = stateCmd(2,1);
 psiCmdDot = stateCmd(3,1);
-xeCmdDot = stateCmd(4,1);
-ynCmdDot = stateCmd(5,1);
+
 
 % pull apart K vector
 Kh1 = K(1,1);
@@ -132,13 +135,13 @@ LbarMax = 1; % given?
 phiMax = pi; % given
 
 if phi > phiMax
-    phi = phiMax
+    phi = phiMax;
 end
 if Lbar > LbarMax 
-    Lbar = LbarMax
+    Lbar = LbarMax;
 end
-if phi > phiMax
-    phi = phiMax
+if Tbar > TbarMax
+    Tbar = TbarMax;
 end
 
 
