@@ -1,4 +1,18 @@
 function [rhs] = UAV_RHS(time, state, control)
+
+% Given time, state, and control inputs, output the state derivates
+%
+% Usage:
+% UAV_RHS(time, state, control)
+%
+% Inputs:
+% time - time vector (remains unused)
+% state - 7 element state vector
+% control - 3 element vector
+% 
+% Outputs:
+% rhs - right hand side output
+
 % constants
 g = 9.81;
 rhs = [0;0;0;0;0;0;0];
