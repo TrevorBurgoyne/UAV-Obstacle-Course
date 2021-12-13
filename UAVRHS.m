@@ -1,4 +1,4 @@
-function [rhs] = UAV_RHS(time, state, control)
+function [rhs] = UAVRHS(time, state, control)
 
 % Given time, state, and control inputs, output the state derivates
 %
