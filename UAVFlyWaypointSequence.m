@@ -19,7 +19,7 @@
 % cmdFull = commands across time
 
 
-function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSet, p)
+function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax)
     
     x0 = x0_orig; % For first waypoint, we start at x0_orig
     n = length(wpSet); % number of waypoints
@@ -31,8 +31,17 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSe
         % Get current waypoint
         wp = wpSet(i); 
 
+        % set the flight parameters for this segment
+        p = struct();
+        p.wp = wp;
+        p.Rmin = Rmin;
+        p.hDotMax = hDotMax;
+        p.dT = .001; % sec
+        p.duration = 120; % sec
+        % p.stopSim = % TODO: ???
+
         % Navigate to waypoint from current x0
-        [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, wp, p);
+        [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, data, p);
 
         % Append path details to the total flight data arrays
         tFull = [tFull, tSeg];
