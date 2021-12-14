@@ -1,6 +1,4 @@
-function [rhs] = UAVRHS(time, state, control)
-
-% modified formate
+function [rhs] = UAVRHS(x,u,g,tau)
 
 % Given time, state, and control inputs, output the state derivates
 %
@@ -9,29 +7,28 @@ function [rhs] = UAVRHS(time, state, control)
 %
 % Inputs:
 % time - time vector (remains unused)
-% state - 7 element state vector
-% control - 3 element vector
+% x - 7 element state vector
+% u - 3 element vector
 % 
 % Outputs:
 % rhs - right hand side output
 
 % constants
-g = 9.81;
 rhs = [0;0;0;0;0;0;0];
 
 % current state
-V = state(1);                   % true airspeed
-psi = state(2);                 % air-relative heading
-gamma = state(3);               % air-relative flight path angle
-x_e = state(4);                 % East position
-y_n = state(5);                 % North position
-h = state(6);                   % altitude
-T = state(7);                   % normalized excess thrust
+V = x(1);                   % true airspeed
+psi = x(2);                 % air-relative heading
+gamma = x(3);               % air-relative flight path angle
+x_e = x(4);                 % East position
+y_n = x(5);                 % North position
+h = x(6);                   % altitude
+T = x(7);                   % normalized excess thrust
 
 % current controls
-L = control(1);
-phi = control(2);
-T_c = control(3);
+L = u(1);
+phi = u(2);
+T_c = u(3);
 
 % rhs calculations
 rhs(1) = T*g - g*sin(gamma);
