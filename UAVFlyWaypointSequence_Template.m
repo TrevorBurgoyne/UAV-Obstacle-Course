@@ -65,7 +65,7 @@ end
 % initialize empty arrays for this function's outputs
 
 % get the number of waypoints
-%n = 
+n = 
 
 for j=1:n
 
