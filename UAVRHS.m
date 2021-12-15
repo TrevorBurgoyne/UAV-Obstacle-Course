@@ -6,10 +6,23 @@ function [rhs] = UAVRHS(x,u,g,tau)
 % UAV_RHS(time, state, control)
 %
 % Inputs:
-% time - time vector (remains unused)
 % x - 7 element state vector
-% u - 3 element vector
-% 
+%     V       true airspeed
+%     gamma   air relative flight path angle
+%     psi     air relative flight heading angle
+%     x       East position
+%     y       North position
+%     h       altitude
+%     Tbar    normalized excess thrust
+%
+% u - 3 element commanded vector
+%     v       velocity command (true airspeed, m/s)
+%     psi     heading command (rad)
+%     h       altitude command (m)
+%
+% g - gravity (m/s^2)
+% tau - engine thrust response time
+%
 % Outputs:
 % rhs - right hand side output
 
