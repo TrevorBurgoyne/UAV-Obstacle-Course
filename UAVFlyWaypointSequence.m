@@ -38,16 +38,24 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSe
         p.hDotMax = hDotMax;
         p.dT = .001; % sec
         p.duration = 120; % sec
-        % p.stopSim = % TODO: ???
+
+        % Stopping function
+        stopSim = @(t,x) stopSim(t,x,wp);
+        p.stopSim = stopSim;
 
         % Navigate to waypoint from current x0
         [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, data, p);
 
         % Append path details to the total flight data arrays
-        tFull = [tFull, tSeg];
         xFull = [xFull, xSeg];
         uFull = [uFull, uSeg];
         cmdFull = [cmdFull, cmdSeg];
+
+        % Time vector need to be offset based on last waypoint's final timestamp
+        if (i > 1)
+            tSeg = tSeg + tFull(end)
+        end
+        tFull = [tFull, tSeg];
 
         % Update x0 to be the final state just calculated (last column of xSeg)
         x0 = xSeg(:, end);
