@@ -29,40 +29,40 @@ fig=figure('name','UAV Obstacle Course','Position',[10 400 1400 1000],...
 ax=axes('parent',fig,'xcolor','w','ycolor','w','zcolor','w','color','k');
 
 % bounding region
-[v,f] = Cuboid( xLim(1),yLim(1),zLim(1), ...
-  diff(xLim), diff(yLim), diff(zLim) );
-hb = patch('faces',f,'Vertices',v,'facecolor','none','edgecolor','c');
+% [v,f] = Cuboid( xLim(1),yLim(1),zLim(1), ...
+%   diff(xLim), diff(yLim), diff(zLim) );
+% hb = patch('faces',f,'Vertices',v,'facecolor','none','edgecolor','c');
 grid on, hold on, axis equal
-ax.XLim=xLim+[-1 1]*diff(xLim)/20;
-ax.YLim=yLim+[-1 1]*diff(yLim)/20;
-ax.ZLim=zLim+[-1 1]*diff(zLim)/20;
+% ax.XLim=xLim+[-1 1]*diff(xLim)/20;
+% ax.YLim=yLim+[-1 1]*diff(yLim)/20;
+% ax.ZLim=zLim+[-1 1]*diff(zLim)/20;
 view(-20,20), rotate3d on
 xlabel('X (m)')
 ylabel('Y (m)')
 zlabel('Z (m)')
 
 % hoops
-for j=1:nHoops
-  [v,f] = torus(40,30,hoopOR(j),'R',hoopIR(j));
-  m1 = RotMat(pi/2,1);
-  m2 = RotMat(hoopPsi(j),3);
-  m3 = RotMat(hoopTheta(j),2);
-  v = (m3*m2*m1*v')'+[hoopX(j),hoopY(j),hoopZ(j)];
-  hh(j) = patch(ax,'faces',f,'Vertices',v,'facecolor',rand(1,3),'edgecolor','none',...
-    'SpecularColorReflectance',.7);
-end
+% for j=1:nHoops
+%   [v,f] = torus(40,30,hoopOR(j),'R',hoopIR(j));
+%   m1 = RotMat(pi/2,1);
+%   m2 = RotMat(hoopPsi(j),3);
+%   m3 = RotMat(hoopTheta(j),2);
+%   v = (m3*m2*m1*v')'+[hoopX(j),hoopY(j),hoopZ(j)];
+%   hh(j) = patch(ax,'faces',f,'Vertices',v,'facecolor',rand(1,3),'edgecolor','none',...
+%     'SpecularColorReflectance',.7);
+% end
 
 % cuboids
-for j=1:nCuboids
-  [v,f] = Cuboid(cubX(j),cubY(j),cubZ(j),cubL(j),cubW(j),cubH(j));
-  m1 = RotMat(pi/2,1);
-  m2 = RotMat(cubPsi(j),3);
-  m3 = RotMat(cubTheta(j),2);
-  pos = [cubX(j),cubY(j),cubZ(j)];
-  v = (m3*m2*m1*(v-pos)')'+ pos;
-  hc(j) = patch(ax,'faces',f,'Vertices',v,'facecolor',rand(1,3),'edgecolor',[.1 .1 .1],...
-    'SpecularColorReflectance',.9);
-end
+% for j=1:nCuboids
+%   [v,f] = Cuboid(cubX(j),cubY(j),cubZ(j),cubL(j),cubW(j),cubH(j));
+%   m1 = RotMat(pi/2,1);
+%   m2 = RotMat(cubPsi(j),3);
+%   m3 = RotMat(cubTheta(j),2);
+%   pos = [cubX(j),cubY(j),cubZ(j)];
+%   v = (m3*m2*m1*(v-pos)')'+ pos;
+%   hc(j) = patch(ax,'faces',f,'Vertices',v,'facecolor',rand(1,3),'edgecolor',[.1 .1 .1],...
+%     'SpecularColorReflectance',.9);
+% end
 
 % targets
 for j=1:nTargets
