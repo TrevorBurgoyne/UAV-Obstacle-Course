@@ -41,7 +41,7 @@ xlabel('X (m)')
 ylabel('Y (m)')
 zlabel('Z (m)')
 
-% hoops
+%% Hoops
 % for j=1:nHoops
 %   [v,f] = torus(40,30,hoopOR(j),'R',hoopIR(j));
 %   m1 = RotMat(pi/2,1);
@@ -52,8 +52,8 @@ zlabel('Z (m)')
 %     'SpecularColorReflectance',.7);
 % end
 
-% cuboids
-% assign cubX,cubY,cubZ,cubL,cubW and cubH
+%% Cuboids
+% assign cubX,cubY,cubZ,cubL,cubW,cubH,cubPsi,cubTheta
 cubX = []; cubY = []; cubZ = []; cubL = []; cubW = []; cubH = [];
 cubPsi = []; cubTheta = [];
 for i = 1:length(cuboid)
@@ -79,7 +79,7 @@ for j=1:nCuboids
     'SpecularColorReflectance',.9);
 end
 
-% targets
+%% targets
 for j=1:nTargets
   plot3(ax,targetPos(1,j),targetPos(2,j),targetPos(3,j),'y.','markersize',25)
 end
