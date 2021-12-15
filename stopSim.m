@@ -4,9 +4,9 @@
 
 function bool = stopSim(t,x,wp)
     % Current position
-    xe = x(:,4);
-    yn = x(:,5);
-    h = x(:,6);
+    xe = x(1,4);
+    yn = x(1,5);
+    h = x(1,6);
 
     % Define waypoint position (x,y,h) ???
     xe_wp = wp(1,1);
