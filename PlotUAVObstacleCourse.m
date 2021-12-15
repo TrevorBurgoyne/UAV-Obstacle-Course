@@ -15,7 +15,7 @@ function PlotUAVObstacleCourse( courseDataFile )
 
 %% Load the mat-file
 if nargin<1
-  courseDataFile = 'UAVCourseData';
+  courseDataFile = 'UAVCourseData_3';
 end
 if ~isstr(courseDataFile)
   error('Provide the NAME (as a string in single quotes) of the .mat file with the UAV course data.')
@@ -24,7 +24,7 @@ load(courseDataFile);
 
 %% Draw all of the hoops and cuboids.
 
-fig=figure('name','UAV Obstacle Course','Position',[10 400 1400 1000],...
+fig=figure('name','UAV Obstacle Course','Position',[10 400 700 500],...
   'Color','k');
 ax=axes('parent',fig,'xcolor','w','ycolor','w','zcolor','w','color','k');
 
@@ -53,16 +53,31 @@ zlabel('Z (m)')
 % end
 
 % cuboids
-% for j=1:nCuboids
-%   [v,f] = Cuboid(cubX(j),cubY(j),cubZ(j),cubL(j),cubW(j),cubH(j));
-%   m1 = RotMat(pi/2,1);
-%   m2 = RotMat(cubPsi(j),3);
-%   m3 = RotMat(cubTheta(j),2);
-%   pos = [cubX(j),cubY(j),cubZ(j)];
-%   v = (m3*m2*m1*(v-pos)')'+ pos;
-%   hc(j) = patch(ax,'faces',f,'Vertices',v,'facecolor',rand(1,3),'edgecolor',[.1 .1 .1],...
-%     'SpecularColorReflectance',.9);
-% end
+% assign cubX,cubY,cubZ,cubL,cubW and cubH
+cubX = []; cubY = []; cubZ = []; cubL = []; cubW = []; cubH = [];
+cubPsi = []; cubTheta = [];
+for i = 1:length(cuboid)
+    cubX(i) =  cuboid(i).pos(1);
+    cubY(i) =  cuboid(i).pos(2);
+    cubZ(i) =  cuboid(i).pos(3);
+    cubL(i) = cuboid(i).dims(1);
+    cubW(i) = cuboid(i).dims(2);
+    cubH(i) = cuboid(i).dims(3);
+    cubPsi(i) = cuboid(i).phi;
+    cubTheta(i) = cuboid(i).theta;
+end
+    
+
+for j=1:nCuboids
+  [v,f] = Cuboid(cubX(j),cubY(j),cubZ(j),cubL(j),cubW(j),cubH(j));
+  m1 = RotMat(pi/2,1);
+  m2 = RotMat(cubPsi(j),3);
+  m3 = RotMat(cubTheta(j),2);
+  pos = [cubX(j),cubY(j),cubZ(j)];
+  v = (m3*m2*m1*(v-pos)')'+ pos;
+  hc(j) = patch(ax,'faces',f,'Vertices',v,'facecolor',rand(1,3),'edgecolor',[.1 .1 .1],...
+    'SpecularColorReflectance',.9);
+end
 
 % targets
 for j=1:nTargets
