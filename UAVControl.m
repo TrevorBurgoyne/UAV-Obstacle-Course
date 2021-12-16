@@ -114,12 +114,42 @@ values = [sin(psiCmd) cos(psiCmd); cos(psiCmd) -1*sin(psiCmd)] * [ xe - xeCmd; y
 zeta = values(1); eta = values(2);
 
 % compute phi, Lbar and Tbar 
-phi = asin(vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta));
+
+% make sure phi is real
+X = vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta)
+if X > sin(pi/2)
+    X = sin(pi/2)
+end
+if X < -sin(pi/2)
+    X = -sin(pi/2)
+end
+phi = asin(X);
 Lbar = 1/cos(phi)*(1-Kh1/g*(hDot - hCmdDot + nHDot) - Kh2/g*(h - hCmd + nH));
 Tbar = sin(gamma) + vCmdDot/g - KN1/g*(vGround - vCmd + nV) - KN2/g*(zeta + nZeta);
 
+
+
+phiMax = pi/2; LbarMax = 1; TbarMax = 1;
+
+if phi > phiMax
+    phi = phiMax;
+elseif phi < -phiMax
+    phi = -phiMax;
+end
+
+if Lbar > LbarMax
+    Lbar = LbarMax
+end
+
+if Tbar > TbarMax
+    Tbar = TbarMax
+end
+
 u = [phi, Lbar, Tbar];
 
+if ~isreal(u)
+    u
+    error('Imaginary control vector')
 end
 
 
