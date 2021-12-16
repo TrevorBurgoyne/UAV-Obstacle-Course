@@ -64,6 +64,7 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
 %--------------------------------------------------------------------------
   nt = length(t);
   ns = size(x0,1);
+  n = 0;
 
   if nargin < 4
     p = [];
@@ -101,29 +102,30 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
 
     % compute commands
     %=================
-    disp('iter n')
-    disp(k)
-    disp('state vec')
-    disp(xtmp)
+    fprintf('iter %d',n)
+%     disp(k)
+%     disp('state vec')
+%     disp(xtmp)
     [cmd,cmdDot] = UAVGuidance(t(k), xtmp, p );
 
     cmdSeg(:,k) = cmd;
-    disp('post guidance')
-
-    disp(cmdSeg(:,k))
-    disp(cmdDot)
-    disp(xSeg(:,k))
+%     disp('post guidance')
+%     
+%     disp(xSeg(:,k))
+%     disp(cmdSeg(:,k))
+%     disp(cmdDot)
+    
     % compute controls
     %=================
     u = UAVControl( xSeg(:,k), cmdSeg(:,k), cmdDot, data );
-    disp('post control')
-    disp(u)
-    uSeg(:,k) = u;
+%     disp('post control')
+%     disp(u)
+%     uSeg(:,k) = u;
 
     % integrate state with controls
     %==============================
     rhs = @(t,x) UAVRHS(x,u,data.g,data.tau);
-    xx = ODENumIntRK4(rhs,[0 dT(k)],xtmp)';
+    xx = ODENumIntRK4(rhs,[0 dT(k)],xtmp')';
     xtmp = xx(2,:); % Get only the new part of xtmp
 
     % store state data
@@ -133,8 +135,11 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
     % terminate if we are close enough to the target waypoint
     %========================================================
     if p.stopSim(t(k),xtmp)
+      disp('stop activated')
       break
     end
+    n = n + 1;
+ 
   end
 
   k = k+1;
