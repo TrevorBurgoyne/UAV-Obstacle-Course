@@ -2,8 +2,8 @@
 % Trevor Burgoyne
 % 9 Dec 2021
 %
-% UAVFlyToWaypointSequence
-% Usage: [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSet, p) 
+% UAVFlyWaypointSequence
+% Usage: [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, p) 
 % Simulate a UAV flight that starts at the initial state and 
 % flies to a sequence of waypoints
 %
@@ -19,7 +19,7 @@
 % cmdFull = commands across time
 
 
-function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax)
+function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax)
     
     x0 = x0_orig; % For first waypoint, we start at x0_orig
     n = length(wpSet); % number of waypoints
@@ -29,7 +29,7 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSe
     for i=1:n
         
         % Get current waypoint
-        wp = wpSet(i); 
+        wp = wpSet(:,i); % column vector with [x; y; h;]
 
         % set the flight parameters for this segment
         p = struct();
@@ -40,8 +40,8 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSe
         p.duration = 120; % sec
 
         % Stopping function
-        stopSim = @(t,x) stopSim(t,x,wp);
-        p.stopSim = stopSim;
+        stop = @(t,x) stopSim(t,x,wp);
+        p.stopSim = stop;
 
         % Navigate to waypoint from current x0
         [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, data, p);
@@ -53,7 +53,7 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSe
 
         % Time vector need to be offset based on last waypoint's final timestamp
         if (i > 1)
-            tSeg = tSeg + tFull(end)
+            tSeg = tSeg + tFull(end);
         end
         tFull = [tFull, tSeg];
 
@@ -61,5 +61,5 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyToWaypointSequence(x0_orig, wpSe
         x0 = xSeg(:, end);
 
     end
-    
+ 
 end

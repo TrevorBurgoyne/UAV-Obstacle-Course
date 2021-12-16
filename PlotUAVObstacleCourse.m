@@ -85,6 +85,40 @@ light('position',[xS yS zS])
 lighting phong
 material metal
 
+% Initialize state vector
+V = 1;      % true airspeed (m/s)
+gamma = 0;  % air relative flight path angle (rad)
+psi = 0;    % air relative flight heading angle (rad)
+x = 0;      % east position (m)
+y = 0;      % north position (m)
+h = 10;     % altitude (m)
+Tbar = 0;   % normalized excess thrust
+% State:    x = [V;gamma;psi;x;y;h;Tbar]
+x0_orig = [V; gamma; psi; x; y; h; Tbar];
+
+% data: Data structure with fields:
+data = struct();
+data.g = 9.81;                % Gravitational acceleration (m/s^2)
+wn    = 0.1;
+zeta  = 0.6;
+data.Kh  = [2*wn*zeta, wn^2]; % altitude control gains
+data.KL  = [.1, .005];        % lateral control gains
+data.Ks  = [.1, .001];        % longitudinal control gains
+data.tau = 5;            
+
+% UAV Parameters
+Rmin = 0.1;  % minimum turn radius (m)
+hDotMax = 5; % maximum climb rate (m/s)
+
+% Waypoints
+wpSet = targetPos;
+% disp(targetPos);
+
+% Run Simulation
+[tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax);
+plot3(xFull(4,:), xFull(5,:), xFull(6,:))
+
+
 function [V,F,Q] = torus(n,m,r,varargin)
   % TORUS Construct a triangle mesh of a unit torus.
   % 

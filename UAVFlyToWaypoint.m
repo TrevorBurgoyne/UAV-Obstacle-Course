@@ -72,9 +72,9 @@ function [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, data, p)
     % [cmd, cmdDot] = UAVGuidance( t, x, p );
 
     % Define time interval (TODO: Decide on limits)
-    tSeg = 0:p.dT:30 % sec
+    tSeg = 0:p.dT:30; % sec
 
     % Call UAVSim on the steering functions to simulate the UAV
-    function [tSeg, xSeg, uSeg, cmdSeg] = UAVSim(tSeg, x0, data, p);
+    [tSeg, xSeg, uSeg, cmdSeg] = UAVSim(tSeg, x0, data, p);
     
 end

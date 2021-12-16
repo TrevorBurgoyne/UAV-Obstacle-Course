@@ -29,7 +29,7 @@ function bool = stopSim(t,x,wp)
     tol = 0.1; % m
     tStop = 30; % sec
     
-    dist = sqrt((xe-we_wp)^2 + (yn-yn_wp)^2 + (h-h_wp)^2);
+    dist = sqrt((xe-xe_wp)^2 + (yn-yn_wp)^2 + (h-h_wp)^2);
 
     if (dist <= tol)
         bool = 1;

@@ -1,4 +1,4 @@
-function [Lbar, phi, Tbar] = UAVControl(x0,stateCmd,stateCmdDot, data)
+function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 % Compute Lift (Lbar), bank angle (phi) and Thrust (Tbar) required for
 % a commanded state. 
 % INPUTS:
@@ -30,10 +30,10 @@ function [Lbar, phi, Tbar] = UAVControl(x0,stateCmd,stateCmdDot, data)
 %                       Kh    Altitude control gains     (1,2)
 %                       KL    Lateral control gains      (1,2)
 %                       Ks    Longitudinal control gains (1,2)
-% OUTPUTS:
+% OUTPUTS: u (1,3)
 % Lbar      (1,1)           Normalized Lift required, ()
 % phi       (1,1)           Bank angle required (x = East, y = North), (rad)
-% Tebar     (1,1)           Normalized Thrust required, ()
+% Tbar     (1,1)           Normalized Thrust required, ()
 
 %% Demo
 if nargin == 0
@@ -63,13 +63,13 @@ nEta = 0; % cross track position uncertainty (m)
 %% Input Checking
 % input checking for state vectors
 % check size of K
-if max(size(K)) ~= 6 || min(size(K)) ~= 1
-    disp('K must be in format [Kh1; Kh2; KL1; KL2; KN1; KN2]')
-end
-% if K is given as a row vector, transform into column vector
-if size(K) == [1 6]
-    K = K';
-end
+% if max(size(K)) ~= 6 || min(size(K)) ~= 1
+%     disp('K must be in format [Kh1; Kh2; KL1; KL2; KN1; KN2]')
+% end
+% % if K is given as a row vector, transform into column vector
+% if size(K) == [1 6]
+%     K = K';
+% end
 
 %% Compute function
 
@@ -117,5 +117,9 @@ zeta = values(1); eta = values(2);
 phi = asin(vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta));
 Lbar = 1/cos(phi)*(1-Kh1/g*(hDot - hCmdDot + nHDot) - Kh2/g*(h - hCmd + nH));
 Tbar = sin(gamma) + vCmdDot/g - KN1/g*(vGround - vCmd + nV) - KN2/g*(zeta + nZeta);
+
+u = [phi, Lbar, Tbar];
+
+end
 
 
