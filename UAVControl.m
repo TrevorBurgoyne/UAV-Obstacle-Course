@@ -25,10 +25,11 @@ function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 %                       Kh    Altitude control gains     (1,2)
 %                       KL    Lateral control gains      (1,2)
 %                       Ks    Longitudinal control gains (1,2)
-% OUTPUTS: u (1,3)
-% Lbar      (1,1)           Normalized Lift required, ()
-% phi       (1,1)           Bank angle required (x = East, y = North), (rad)
-% Tbar     (1,1)           Normalized Thrust required, ()
+% OUTPUTS: 
+% u        (1,3)   Command vector [Lbar, phi, Tbar]
+%                   Lbar     Normalized Lift required, (1,1)
+%        	        phi      Bank angle (x = East, y = North), (rad), (1,1)
+%      	            Tbar     Normalized Thrust required, (1,1)
 
 %% Demo
 if nargin == 0
@@ -56,15 +57,7 @@ nZeta = 0; % along-track position uncertainty (m)
 nEta = 0; % cross track position uncertainty (m)
 
 %% Input Checking
-% input checking for state vectors
-% check size of K
-% if max(size(K)) ~= 6 || min(size(K)) ~= 1
-%     disp('K must be in format [Kh1; Kh2; KL1; KL2; KN1; KN2]')
-% end
-% % if K is given as a row vector, transform into column vector
-% if size(K) == [1 6]
-%     K = K';
-% end
+
 
 %% Compute function
 
@@ -108,7 +101,10 @@ vGround = sqrt(xeDot^2 + ynDot^2);
 values = [sin(psiCmd) cos(psiCmd); cos(psiCmd) -1*sin(psiCmd)] * [ xe - xeCmd; yn - ynCmd ];
 zeta = values(1); eta = values(2);
 
-% compute phi, Lbar and Tbar 
+%% Compute phi, Lbar and Tbar 
+% phi = bank angle, +- pi/2
+% Lbar = normalized excess thrust
+% Tbar = normalized excess thrust
 
 % make sure phi is real
 X = vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta);
@@ -122,9 +118,7 @@ phi = asin(X);
 Lbar = 1/cos(phi)*(1-Kh1/g*(hDot - hCmdDot + nHDot) - Kh2/g*(h - hCmd + nH));
 Tbar = sin(gamma) + vCmdDot/g - KN1/g*(vGround - vCmd + nV) - KN2/g*(zeta + nZeta);
 
-
-
-phiMax = pi/2; LbarMax = 1.5; TbarMax = 1;
+phiMax = pi/2; LbarMax = 1.5; TbarMax = .5;
 
 if phi > phiMax
     phi = phiMax;
@@ -134,10 +128,14 @@ end
 
 if Lbar > LbarMax
     Lbar = LbarMax;
+elseif Lbar < -LbarMax
+    Lbar = -LbarMax;
 end
 
 if Tbar > TbarMax
     Tbar = TbarMax;
+elseif Tbar < -TbarMax
+    Tbar = -TbarMax;
 end
 
 u = [Lbar, phi, Tbar];
