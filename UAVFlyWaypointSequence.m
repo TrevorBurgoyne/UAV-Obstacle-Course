@@ -60,6 +60,11 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet,
         % Update x0 to be the final state just calculated (last column of xSeg)
         x0 = xSeg(:, end);
 
+        % Re-Initialize state vector TODO: this is prolly cheating
+        x0(2) = 0;
+        x0(3) = 0;
+        x0(7) = 0;
+
     end
  
 end

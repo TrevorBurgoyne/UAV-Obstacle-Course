@@ -76,10 +76,12 @@ for j=1:nCuboids
 end
 
 % targets
-for j=1:nTargets
-% testWp = 1;
-% for j=testWp:testWp
-  d.hTgt(j) = plot3(d.ax,targetPos(1,j),targetPos(2,j),targetPos(3,j),'y.','markersize',25);
+% for j=1:nTargets
+wpOrder = [2 3 5]; % Order of waypoints
+testWps = targetPos(:,wpOrder); 
+for j=1:size(testWps,2)
+  % d.hTgt(j) = plot3(d.ax,targetPos(1,j),targetPos(2,j),targetPos(3,j),'y.','markersize',25);
+  d.hTgt(j) = plot3(d.ax,testWps(1,j),testWps(2,j),testWps(3,j),'y.','markersize',25);
 end
 
 light
@@ -113,8 +115,8 @@ Rmin = 0.1;   % minimum turn radius (m)
 hDotMax = 5; % maximum climb rate (m/s)
 
 % Waypoints
-wpSet = targetPos;
-% wpSet = targetPos(:,testWp);
+% wpSet = targetPos;
+wpSet = testWps;
 % disp(targetPos);
 
 % Run Simulation
