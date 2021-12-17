@@ -2,27 +2,22 @@ function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 % Compute Lift (Lbar), bank angle (phi) and Thrust (Tbar) required for
 % a commanded state. 
 % INPUTS:
-% x0    (6,1)           inital state
-%                           [v; h; psi; xe; yn]
-%                           v = speed (m/s)
-%                           h = UAV altitude, (m)
-%                           psi = UAV air-relative heading (CW from North), 0 to 2pi (rad)
-%                           gamma = flight path angle (rad)
-%                           xe = east position (m)
-%                           yn = north position (m)
+% x0    (6,1)           %   
+% State:     x = [V;gamma;psi;x;y;h;Tbar]
+%   --------------------------------------
+%     V     true airspeed
+%     gamma  air relative flight path angle
+%     psi   air relative flight heading angle
+%     x     East position
+%     y     North position
+%     h     altitude
+%     Tbar  normalized excess thrust
 %     
-% stateCmd  (5,1)           commanded state 
-%                           [vCmd; hCmd; psiCmd; xnCmd; ynCmd]
-%                           vCmd = speed commanded (m/s)
-%                           hCmd = UAV commanded altitude, (m)
-%                           psiCmd = UAV commanded air-relative heading (CW from North), 0 to 2pi (rad)
-%                           xnCmd = east position commanded (m)
-%                           ynCmd = north position commanded (m)
+% stateCmd  (5,1)   Commanded velocity, heading, altitude, and horizontal
+%                   position.  [v;psi;h;x;y]
 %
-% stateCmdDot (3,1)         commanded state derivatives 
-%                           vCmdDot = acceleration commanded (m/s/s)
-%                           hCmdDot = vCmd (m/s)
-%                           psiCmdDot = angular velocity commanded (rad/s)
+% cmdDot  (3,1)     Commanded rate of change of velocity, heading, altitude.
+%                   [vDot;psiDot;hDot]
 %                           
 %                                           
 % data              Data structure with fields:
@@ -75,11 +70,11 @@ nEta = 0; % cross track position uncertainty (m)
 
 % pull apart x0 vector
 v = x0(1,1);
-h = x0(2,1);
+gamma = x0(2,1);
 psi = x0(3,1);
-gamma = x0(4,1);
-xe = x0(5,1);
-yn = x0(6,1);
+xe = x0(4,1);
+yn = x0(5,1);
+h = x0(6,1);
 
 % define derivatives necessary for computing Lbar, phi, Tcbar
 hDot = v*sin(gamma);
@@ -88,15 +83,15 @@ ynDot = v*cos(gamma)*cos(psi);
 
 % pull apart stateCmd
 vCmd = stateCmd(1,1);
-hCmd = stateCmd(2,1);
-psiCmd = stateCmd(3,1);
+psiCmd = stateCmd(2,1);
+hCmd = stateCmd(3,1);
 xeCmd = stateCmd(4,1);
 ynCmd = stateCmd(5,1);
 
 % pull apart stateCmd
 vCmdDot = stateCmdDot(1,1);
-hCmdDot = stateCmdDot(2,1);
-psiCmdDot = stateCmdDot(3,1);
+psiCmdDot = stateCmdDot(2,1);
+hCmdDot = stateCmdDot(3,1);
 
 % define gains
 Kh1 = data.Kh(1);
@@ -116,12 +111,12 @@ zeta = values(1); eta = values(2);
 % compute phi, Lbar and Tbar 
 
 % make sure phi is real
-X = vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta)
+X = vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta);
 if X > sin(pi/2)
-    X = sin(pi/2)
+    X = sin(pi/2);
 end
 if X < -sin(pi/2)
-    X = -sin(pi/2)
+    X = -sin(pi/2);
 end
 phi = asin(X);
 Lbar = 1/cos(phi)*(1-Kh1/g*(hDot - hCmdDot + nHDot) - Kh2/g*(h - hCmd + nH));
@@ -129,7 +124,7 @@ Tbar = sin(gamma) + vCmdDot/g - KN1/g*(vGround - vCmd + nV) - KN2/g*(zeta + nZet
 
 
 
-phiMax = pi/2; LbarMax = 1; TbarMax = 1;
+phiMax = pi/2; LbarMax = 1.5; TbarMax = 1;
 
 if phi > phiMax
     phi = phiMax;
@@ -138,14 +133,14 @@ elseif phi < -phiMax
 end
 
 if Lbar > LbarMax
-    Lbar = LbarMax
+    Lbar = LbarMax;
 end
 
 if Tbar > TbarMax
-    Tbar = TbarMax
+    Tbar = TbarMax;
 end
 
-u = [phi, Lbar, Tbar];
+u = [Lbar, phi, Tbar];
 
 if ~isreal(u)
     u

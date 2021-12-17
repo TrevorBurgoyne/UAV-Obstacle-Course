@@ -64,7 +64,6 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
 %--------------------------------------------------------------------------
   nt = length(t);
   ns = size(x0,1);
-  n = 0;
 
   if nargin < 4
     p = [];
@@ -102,7 +101,7 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
 
     % compute commands
     %=================
-    fprintf('iter %d',n)
+    % fprintf('iter %d\n',n)
 %     disp(k)
 %     disp('state vec')
 %     disp(xtmp)
@@ -128,6 +127,18 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
     xx = ODENumIntRK4(rhs,[0 dT(k)],xtmp')';
     xtmp = xx(2,:); % Get only the new part of xtmp
 
+    % if (mod(k, 1000) == 0) % Print every 1000 iterations
+    %   fprintf('iter %d\n',k)
+    %   disp('state')
+    %   disp(xtmp)
+    %   disp('cmd')
+    %   disp(cmd)
+    %   disp('cmdDot')
+    %   disp(cmdDot)
+    %   disp('u')
+    %   disp(u)
+    % end
+
     % store state data
     %=================
     xSeg(:,k+1) = xtmp; 
@@ -135,10 +146,10 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
     % terminate if we are close enough to the target waypoint
     %========================================================
     if p.stopSim(t(k),xtmp)
-      disp('stop activated')
+      % disp('stop activated at:')
+      % disp(t(k))
       break
     end
-    n = n + 1;
  
   end
 

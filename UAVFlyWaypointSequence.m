@@ -22,7 +22,7 @@
 function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax)
     
     x0 = x0_orig; % For first waypoint, we start at x0_orig
-    n = length(wpSet); % number of waypoints
+    n = size(wpSet,2); % number of waypoints
     tFull = []; xFull = []; uFull = []; cmdFull = []; % Initialize arrays to store all the flight data
 
     % Loop through the waypoints and navigate from point to point
@@ -37,10 +37,10 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet,
         p.Rmin = Rmin;
         p.hDotMax = hDotMax;
         p.dT = .001; % sec
-        p.duration = 120; % sec
+        p.duration = 60; % sec
 
         % Stopping function
-        stop = @(t,x) stopSim(t,x,wp);
+        stop = @(t,x) stopSim(t,x,wp,p.duration);
         p.stopSim = stop;
 
         % Navigate to waypoint from current x0

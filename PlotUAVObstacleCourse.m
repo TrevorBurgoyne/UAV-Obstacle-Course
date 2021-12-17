@@ -77,6 +77,8 @@ end
 
 % targets
 for j=1:nTargets
+% testWp = 1;
+% for j=testWp:testWp
   d.hTgt(j) = plot3(d.ax,targetPos(1,j),targetPos(2,j),targetPos(3,j),'y.','markersize',25);
 end
 
@@ -86,12 +88,12 @@ lighting phong
 material metal
 
 % Initialize state vector
-V = 1;      % true airspeed (m/s)
+V = 5;      % true airspeed (m/s)
 gamma = 0;  % air relative flight path angle (rad)
 psi = 0;    % air relative flight heading angle (rad)
-x = 0;      % east position (m)
-y = 0;      % north position (m)
-h = 10;     % altitude (m)
+x = 50;     % east position (m)
+y = 200;    % north position (m)
+h = 35;     % altitude (m)
 Tbar = 0;   % normalized excess thrust
 % State:    x = [V;gamma;psi;x;y;h;Tbar]
 x0_orig = [V; gamma; psi; x; y; h; Tbar];
@@ -104,14 +106,15 @@ zeta  = 0.6;
 data.Kh  = [2*wn*zeta, wn^2]; % altitude control gains
 data.KL  = [.1, .005];        % lateral control gains
 data.Ks  = [.1, .001];        % longitudinal control gains
-data.tau = 5;            
+data.tau = 0.005;             % Engine response time (s)           
 
 % UAV Parameters
-Rmin = 0.1;  % minimum turn radius (m)
+Rmin = 0.1;   % minimum turn radius (m)
 hDotMax = 5; % maximum climb rate (m/s)
 
 % Waypoints
 wpSet = targetPos;
+% wpSet = targetPos(:,testWp);
 % disp(targetPos);
 
 % Run Simulation

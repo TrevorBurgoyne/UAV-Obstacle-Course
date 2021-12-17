@@ -31,8 +31,8 @@ rhs = [0;0;0;0;0;0;0];
 
 % current state
 V = x(1);                   % true airspeed
-psi = x(2);                 % air-relative heading
-gamma = x(3);               % air-relative flight path angle
+gamma = x(2);               % air-relative flight path angle
+psi = x(3);                 % air-relative heading
 x_e = x(4);                 % East position
 y_n = x(5);                 % North position
 h = x(6);                   % altitude
@@ -44,13 +44,13 @@ phi = u(2);
 T_c = u(3);
 
 % rhs calculations
-rhs(1) = T*g - g*sin(gamma);
-rhs(2) = 1/(V*cos(gamma))*(g*L*sin(phi));
-rhs(3) = 1/V * (g*L*cos(phi) - g *cos(gamma));
-rhs(4) = V*cos(gamma)*sin(psi);
-rhs(5) = V*cos(gamma)*cos(psi);
-rhs(6) = V*sin(gamma);
-rhs(7) = 1/tau*(T_c-T);
+rhs(1) = T*g - g*sin(gamma);                   % vDot
+rhs(2) = 1/V * (g*L*cos(phi) - g *cos(gamma)); % gammaDot
+rhs(3) = 1/(V*cos(gamma))*(g*L*sin(phi));      % psiDot        
+rhs(4) = V*cos(gamma)*sin(psi);                % xDot
+rhs(5) = V*cos(gamma)*cos(psi);                % yDot
+rhs(6) = V*sin(gamma);                         % hDot
+rhs(7) = 1/tau*(T_c-T);                        % TbarDot
 
 
 end

@@ -38,13 +38,13 @@ if timeRows>1 && timeCols>1
     error('Time vector is not the right size (1,P)')
 elseif timeRows>1 %Makes code still usable 
     time(:); 
-    warning('Time vector has improper dimensions (P,1), changed to (1,P)')
+    % warning('Time vector has improper dimensions (P,1), changed to (1,P)')
 end 
 if x0Rows>1 && x0Cols>1
     error('Intial State vector is not the right size (N,1)')
 elseif x0Cols>1 %Makes code still usable 
     x0(:); 
-    warning('Initial State vector has improper dimensions (1,N), changed to (N,1)')
+    % warning('Initial State vector has improper dimensions (1,N), changed to (N,1)')
 end 
 
 

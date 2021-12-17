@@ -14,7 +14,7 @@
 % Outputs:
 % bool = returns 1 if simulation should stop; else 0
 
-function bool = stopSim(t,x,wp)
+function bool = stopSim(t,x,wp,tStop)
     % Current position
     xe = x(4);
     yn = x(5);
@@ -26,8 +26,7 @@ function bool = stopSim(t,x,wp)
     h_wp = wp(3);
 
     % Tolerance
-    tol = 0.1; % m
-    tStop = 30; % sec
+    tol = 2; % m
     
     dist = sqrt((xe-xe_wp)^2 + (yn-yn_wp)^2 + (h-h_wp)^2);
 
