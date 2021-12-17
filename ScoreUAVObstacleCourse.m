@@ -1,4 +1,5 @@
-function d = ScoreUAVObstacleCourse( time, states, controls, courseDataFile )
+function d = ScoreUAVObstacleCourse( courseDataFile )
+% function d = ScoreUAVObstacleCourse( time, states, controls, courseDataFile )
 
 % Score the trajectory flown through the obstacle course.
 % 
@@ -17,19 +18,22 @@ function d = ScoreUAVObstacleCourse( time, states, controls, courseDataFile )
 
 %% Load the mat-file
 if nargin<1
-  courseDataFile = 'UAVCourseData';
+  courseDataFile = 'UAVCourseData_1';
 end
 if ~isstr(courseDataFile)
   error('Provide the NAME (as a string in single quotes) of the .mat file with the UAV course data.')
   end
 load(courseDataFile);
 
+% Run simulation to get relevant vectors
+[pp, time, states, controls] = PlotUAVObstacleCourse(courseDataFile);
+
 %% Plot the obstacle course and the trajectory
 x = states(4,:);
 y = states(5,:);
 h = states(6,:);
 pos = [x;y;h];
-pp = PlotUAVObstacleCourse(courseDataFile);
+
 d.trajPlot = plot3(x,y,h,'c:','linewidth',2);
 d.courseHandles = pp;
 axis tight
@@ -40,7 +44,15 @@ pointsPerTarget = 100;
 tol = 3; % meters
 d.targetsHit = [];
 for j=1:nTargets
-  dist = VMag( pos - targetPos(:,j) );
+  % dist = VMag( pos - targetPos(:,j) );
+
+  % Define waypoint position [x,y,h]
+  x_wp = targetPos(1,j);
+  y_wp = targetPos(2,j);
+  h_wp = targetPos(3,j);
+  
+  dist = sqrt((x-x_wp).^2 + (y-y_wp).^2 + (h-h_wp).^2);
+
   if min(dist)<tol
     d.targetPoints = d.targetPoints + pointsPerTarget;
     d.targetsHit(end+1) = j;

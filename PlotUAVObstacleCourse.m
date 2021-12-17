@@ -1,4 +1,4 @@
-function d = PlotUAVObstacleCourse( courseDataFile )
+function [d, tFull, xFull, cmdFull] = PlotUAVObstacleCourse( courseDataFile )
 
 % Plot the obstacle course for UAVs to fly through.
 % 
