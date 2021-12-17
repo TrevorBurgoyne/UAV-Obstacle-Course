@@ -91,8 +91,8 @@ xT = wp(1);
 yT = wp(2);
 
 v0 = state(1);
+gamma0 = state(2);
 psi0 = state(3);
-
 
 % center of turning circle: potentially two sides
 xC1 = x0+Rmin*cos(psi0);
@@ -113,18 +113,27 @@ else
   % desired heading
   psiT = atan2(xT-x0,yT-y0);
 
+  % est time to destination (assuming correct heading)
+  xDot = v0*cos(gamma0)*sin(psi0);
+  yDot = v0*cos(gamma0)*cos(psi0);
+  
+  tDest = sqrt((xT-x0)^2 + (yT-y0)^2) / sqrt(xDot^2 + yDot^2);
+
   if abs(psiT-psi0)>pi
     1;
   end
 
-  while psiT-psi0<-pi
+  while ( (psiT-psi0) < -pi )
     psiT = psiT+2*pi;
   end
-  while psiT-psi0>pi
+  while ( (psiT-psi0) > pi )
     psiT = psiT-2*pi;
-  end
+  end  
 
-  psiDot = (psiT-psi0)/dT;
+  % psiDot = (psiT-psi0)/dT;
+  % Turn slightly slower than literally dT
+  psiDot = (psiT-psi0)/(.1*tDest);
+
   if abs(psiDot)>v0/Rmin
     psiDot = sign(psiDot)*v0/Rmin;
   end

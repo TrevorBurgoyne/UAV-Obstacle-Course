@@ -34,15 +34,16 @@ function bool = stopSim(t,x,wp,tStop)
     h_wp = wp(3);
 
     % Tolerance
-    tol = 2; % m
+    tol = 3; % m
     
     dist = sqrt((xe-xe_wp)^2 + (yn-yn_wp)^2 + (h-h_wp)^2);
 
     if (dist <= tol)
         disp('hit waypoint!')
+        disp(t)
         bool = 1;
     else if (t > tStop)
-        disp('took to long, timed out!')
+        disp('took too long, timed out!')
         bool = 1;
     else
         bool = 0;

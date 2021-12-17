@@ -77,7 +77,9 @@ end
 
 % targets
 % for j=1:nTargets
-wpOrder = [2 3 5]; % Order of waypoints
+% wpOrder = [2 3 5]; % Order of waypoints
+% wpOrder = [2 3 5];
+[~,wpOrder] = sort(targetPos(3,:),'descend'); % Fly to points in descending order by altitude
 testWps = targetPos(:,wpOrder); 
 for j=1:size(testWps,2)
   % d.hTgt(j) = plot3(d.ax,targetPos(1,j),targetPos(2,j),targetPos(3,j),'y.','markersize',25);
@@ -103,21 +105,22 @@ x0_orig = [V; gamma; psi; x; y; h; Tbar];
 % data: Data structure with fields:
 data = struct();
 data.g = 9.81;                % Gravitational acceleration (m/s^2)
-wn    = 0.1;
-zeta  = 0.6;
+wn = 0.1;
+zeta = 0.6;
 data.Kh  = [2*wn*zeta, wn^2]; % altitude control gains
 data.KL  = [.1, .005];        % lateral control gains
 data.Ks  = [.1, .001];        % longitudinal control gains
+% data.KL  = [.1, 0];        % lateral control gains
+% data.Ks  = [.1, 0];        % longitudinal control gains
 data.tau = 0.005;             % Engine response time (s)           
 
 % UAV Parameters
 Rmin = 0.1;   % minimum turn radius (m)
-hDotMax = 5; % maximum climb rate (m/s)
+hDotMax = 10; % maximum climb rate (m/s)
 
 % Waypoints
 % wpSet = targetPos;
 wpSet = testWps;
-% disp(targetPos);
 
 % Run Simulation
 [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax);

@@ -107,18 +107,20 @@ zeta = values(1); eta = values(2);
 % Tbar = normalized excess thrust
 
 % make sure phi is real
-X = vCmd/g*psiCmdDot - KL1*vCmd/g*(psi - psiCmd + nPsi) - KL2/g*(eta + nEta);
+X = (vCmd/g)*psiCmdDot - ((KL1*vCmd)/g)*(psi - psiCmd + nPsi) - (KL2/g)*(eta + nEta);
+
 if X > sin(pi/2)
     X = sin(pi/2);
 end
 if X < -sin(pi/2)
     X = -sin(pi/2);
 end
+
 phi = asin(X);
 Lbar = 1/cos(phi)*(1-Kh1/g*(hDot - hCmdDot + nHDot) - Kh2/g*(h - hCmd + nH));
 Tbar = sin(gamma) + vCmdDot/g - KN1/g*(vGround - vCmd + nV) - KN2/g*(zeta + nZeta);
 
-phiMax = pi/2; LbarMax = 1.5; TbarMax = .5;
+phiMax = pi/2; LbarMax = 10; TbarMax = 1;
 
 if phi > phiMax
     phi = phiMax;

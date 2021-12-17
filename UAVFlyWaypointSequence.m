@@ -37,11 +37,15 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet,
         p.Rmin = Rmin;
         p.hDotMax = hDotMax;
         p.dT = .001; % sec
-        p.duration = 60; % sec
+        p.duration = 120; % sec
 
         % Stopping function
         stop = @(t,x) stopSim(t,x,wp,p.duration);
         p.stopSim = stop;
+
+        % disp(i)
+        % disp('delta_h')
+        % disp(wp(3)-x0(6))
 
         % Navigate to waypoint from current x0
         [tSeg, xSeg, uSeg, cmdSeg] = UAVFlyToWaypoint(x0, data, p);
@@ -59,11 +63,6 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet,
 
         % Update x0 to be the final state just calculated (last column of xSeg)
         x0 = xSeg(:, end);
-
-        % Re-Initialize state vector TODO: this is prolly cheating
-        x0(2) = 0;
-        x0(3) = 0;
-        x0(7) = 0;
 
     end
  
