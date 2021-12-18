@@ -81,7 +81,7 @@ hCmd = stateCmd(3,1);
 xeCmd = stateCmd(4,1);
 ynCmd = stateCmd(5,1);
 
-% pull apart stateCmd
+% pull apart stateCmdDot
 vCmdDot = stateCmdDot(1,1);
 psiCmdDot = stateCmdDot(2,1);
 hCmdDot = stateCmdDot(3,1);
