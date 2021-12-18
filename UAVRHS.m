@@ -29,6 +29,28 @@ function [rhs] = UAVRHS(x,u,g,tau)
 
 rhs = [0;0;0;0;0;0;0];
 
+% input checking
+if g <= 0
+    error("G must not be negative")
+end
+if tau < 0
+    error("Engine thrust response time must be greater than zero")
+end
+if len(x) ~= 7
+    error("State vector must contain 7 elements")
+end
+if len(u) ~= 3
+    error("Control vector must contain 3 elements")
+end
+
+% DEMO
+if nargin == 0
+    x = [5;0;0;6;10;15;2];
+    u = [2;5;3];
+    g = 9.81;
+    tau = 2;
+end
+
 % current state
 V = x(1);                   % true airspeed
 gamma = x(2);               % air-relative flight path angle
