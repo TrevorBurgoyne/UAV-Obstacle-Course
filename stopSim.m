@@ -1,4 +1,7 @@
-%% Final Project: Group 4
+
+
+
+function bool = stopSim(t,x,wp,tStop)
 % Trevor Burgoyne
 % 15 Dec 2021
 %
@@ -14,7 +17,6 @@
 % Outputs:
 % bool = returns 1 if simulation should stop; else 0
 
-function bool = stopSim(t,x,wp,tStop)
 %% Demo
     if nargin <= 0
         x = [0; 0; 0; 2; 3; 4; 0];
