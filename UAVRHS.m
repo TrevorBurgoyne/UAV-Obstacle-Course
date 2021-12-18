@@ -36,10 +36,10 @@ end
 if tau < 0
     error("Engine thrust response time must be greater than zero")
 end
-if len(x) ~= 7
+if length(x) ~= 7
     error("State vector must contain 7 elements")
 end
-if len(u) ~= 3
+if length(u) ~= 3
     error("Control vector must contain 3 elements")
 end
 
