@@ -1,11 +1,13 @@
 
 function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, data, Rmin, hDotMax)
+    %% Final Project: Group 4
     % Trevor Burgoyne
     % 9 Dec 2021
     %
-    % Usage: Simulates a UAV flight that starts at the initial state and 
-    % flies to a sequence of waypoints.
-    % Function Call: [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, p)
+    % UAVFlyWaypointSequence
+    % Usage: [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet, p) 
+    % Simulate a UAV flight that starts at the initial state and 
+    % flies to a sequence of waypoints
     %
     % INPUTS:
     %             
@@ -20,12 +22,17 @@ function [tFull, xFull, uFull, cmdFull] = UAVFlyWaypointSequence(x0_orig, wpSet,
     %     Tbar  normalized excess thrust
     %
     % wpSet       (3,N)     matrix of N waypoints, in order
+    %
     % Rmin        (1,1)     minimun turn radius of UAV
+    %
     % hDotMax     (1,1)     maximum altitude rate of change
     %
     % OUTPUTS:
+    %
     % tFull       (1,M)     time vector
+    %
     % xFull       (7,M)     states across time, in form x = [V;gamma;psi;x;y;h;Tbar]
+    %
     % uFull       (3,M)     controls across time
     % cmdFull     (5,M)     commands across time
     

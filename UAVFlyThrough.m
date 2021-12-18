@@ -1,5 +1,4 @@
 function UAVFlyThrough( time, states, fig )
-
 % Animated fly-through of the obstacle course along the UAV trajectory.
 %
 % Call PlotUAVObstacleCourse or ScoreUAVObstacleCourse first to generate
@@ -17,11 +16,13 @@ function UAVFlyThrough( time, states, fig )
 %   None
 %
 
+%% Input Checking
 if nargin<3
   fig = gcf;
 end
 figure(fig);
 
+%% Run Function
 xd = states(4,:);
 yd = states(5,:);
 zd = states(6,:);

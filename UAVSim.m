@@ -1,7 +1,5 @@
 function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
-
-%% Simulate a point mass aircraft model from an initial state w/ steering.
-%
+% Usage: Simulate a point mass aircraft model from an initial state w/ steering.
 %   State:     x = [V;gama;psi;x;y;h;Tbar]
 %   --------------------------------------
 %     V       true airspeed
@@ -32,7 +30,7 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
 %--------------------------------------------------------------------------
 %
 %   ------
-%   Inputs
+%   INPUTS
 %   ------
 %   t       (1,N)     Time vector
 %   x0      (7,1)     Initial state vector
@@ -51,7 +49,7 @@ function [tSeg,xSeg,uSeg,cmdSeg] = UAVSim( t, x0, data, p )
 %                                         when this evaluates to true.
 %
 %   -------
-%   Outputs
+%   OUTPUTS
 %   -------
 %   tSeg    (1,M)     Time vector for this segment. Equivalent to "t" input.
 %   xSeg    (7,M)     State vector across time for this segment.

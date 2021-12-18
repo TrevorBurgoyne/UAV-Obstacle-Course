@@ -1,12 +1,11 @@
 function [rhs] = UAVRHS(x,u,g,tau)
-
 % Given state vector "x", command vector "u", and constants "g" and "tau", 
 % compute the Right Hand Side state derivative
 %
 % Usage:
 % UAV_RHS(x, u, g, tau)
 %
-% Inputs:
+% INPUTS:
 % x - (7,1) element state vector
 %     V       true airspeed (m/s)
 %     gamma   air relative flight path angle (radians)
@@ -22,14 +21,15 @@ function [rhs] = UAVRHS(x,u,g,tau)
 %     h       altitude command (m)
 %
 % g - gravity (m/s^2)
-% tau - engine thrust response time
+% tau - engine thrust response time (s)
 %
-% Outputs:
+% OUTPUTS:
 % rhs - (7,1) right hand side output of the changes in the state vector
 
+% initalize rhs
 rhs = [0;0;0;0;0;0;0];
 
-% input checking
+%% Input checking
 if g <= 0
     error("G must not be negative")
 end
@@ -43,13 +43,14 @@ if length(u) ~= 3
     error("Control vector must contain 3 elements")
 end
 
-% DEMO
+%% Demo
 if nargin == 0
     x = [5;0;0;6;10;15;2];
     u = [2;5;3];
     g = 9.81;
     tau = 2;
 end
+%% Dynamic Model
 
 % current state
 V = x(1);                   % true airspeed

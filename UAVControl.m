@@ -5,14 +5,13 @@ function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 % x0            (6,1)           %   
 % State:     x = [V;gamma;psi;x;y;h;Tbar]
 %   --------------------------------------
-%     V     true airspeed
-%     gamma  air relative flight path angle
-%     psi   air relative flight heading angle
-%     x     East position
-%     y     North position
-%     h     altitude
+%     V     true airspeed (m/s)
+%     gamma  air relative flight path angle (rad)
+%     psi   air relative flight heading angle (rad)
+%     x     East position (m)
+%     y     North position (m)
+%     h     altitude (m)
 %     Tbar  normalized excess thrust
-%     
 % stateCmd      (5,1)   Commanded velocity, heading, altitude, and horizontal
 %                       position.  [v;psi;h;x;y]
 %
