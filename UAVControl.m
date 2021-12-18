@@ -2,7 +2,7 @@ function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 % Compute Lift (Lbar), bank angle (phi) and Thrust (Tbar) required for
 % a commanded state. 
 % INPUTS:
-% x0    (6,1)           %   
+% x0            (6,1)           %   
 % State:     x = [V;gamma;psi;x;y;h;Tbar]
 %   --------------------------------------
 %     V     true airspeed
@@ -13,11 +13,11 @@ function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 %     h     altitude
 %     Tbar  normalized excess thrust
 %     
-% stateCmd  (5,1)   Commanded velocity, heading, altitude, and horizontal
-%                   position.  [v;psi;h;x;y]
+% stateCmd      (5,1)   Commanded velocity, heading, altitude, and horizontal
+%                       position.  [v;psi;h;x;y]
 %
-% cmdDot  (3,1)     Commanded rate of change of velocity, heading, altitude.
-%                   [vDot;psiDot;hDot]
+% stateCmdDot   (3,1)   Commanded rate of change of velocity, heading, altitude.
+%                       [vDot;psiDot;hDot]
 %                           
 %                                           
 % data              Data structure with fields:
@@ -26,27 +26,48 @@ function u = UAVControl(x0,stateCmd,stateCmdDot, data)
 %                       KL    Lateral control gains      (1,2)
 %                       Ks    Longitudinal control gains (1,2)
 % OUTPUTS: 
-% u        (1,3)   Command vector [Lbar, phi, Tbar]
-%                   Lbar     Normalized Lift required, (1,1)
-%        	        phi      Bank angle (x = East, y = North), (rad), (1,1)
-%      	            Tbar     Normalized Thrust required, (1,1)
+% u             (1,3)   Command vector [Lbar, phi, Tbar]
+%                       Lbar     Normalized Lift required, (1,1)
+%                       phi      Bank angle (x = East, y = North), (rad), (1,1)
+%                       Tbar     Normalized Thrust required, (1,1)
 
 %% Demo
 if nargin == 0
     disp('Demo Mode')
-    x0 = [ 1;  1; 0; 0; 0; 0];
-    stateCmd = [ 2;  2; 0; 3; 4];
-    stateCmdDot = [ 1;  1; pi/4; 1; 1];
+    x0 = [ 1;  1; 0; 0; 0; 0;1];
+    stateCmd = [ 2;  2; 4; 3; 1];
+    stateCmdDot = [ 1;  1; pi/4];
     K = [ 1; 1; 1; 1; 1; 1];
     data.g = 9.81; % (m/s)
     data.Kh = [1,1];
     data.KL = [1,1];
     data.Ks = [1,1];
 end
+%% Input Checking
+
+% check state vector is complete
+if length(x0) ~= 7 || ~isreal(x0)
+    error('Error inital state not complete or is not real')
+end
+% check stateCmd vector is complete and real
+if length(stateCmd) < 5 || ~isreal(stateCmd)
+    error('stateCmd must have 5 real elements')
+end
+% check stateCmdDot is complete and real
+if length(stateCmdDot) < 3 || ~isreal(stateCmdDot)
+    length(stateCmdDot)
+    ~isreal(stateCmdDot)
+    error('stateCmdDot must have 3 real elements')
+end
+% check data is a structure
+if ~isstruct(data)
+    error('data must be a struct')
+end
 
 %% Constants
+
 % gravitational acceleration on Earth
-g = data.g; % m/s/s
+g = data.g; % (m/s/s)
 
 % uncertainites 
 nH = 0; % altitude uncertainty, (m)
@@ -56,8 +77,13 @@ nPsi = 0; % air-relative heading uncertainty, (rad)
 nZeta = 0; % along-track position uncertainty (m)
 nEta = 0; % cross track position uncertainty (m)
 
-%% Input Checking
-
+% define gains
+Kh1 = data.Kh(1);
+Kh2 = data.Kh(2);
+KL1 = data.KL(1);
+KL2 = data.KL(2);
+KN1 = data.Ks(1);
+KN2 = data.Ks(2);
 
 %% Compute function
 
@@ -86,14 +112,6 @@ vCmdDot = stateCmdDot(1,1);
 psiCmdDot = stateCmdDot(2,1);
 hCmdDot = stateCmdDot(3,1);
 
-% define gains
-Kh1 = data.Kh(1);
-Kh2 = data.Kh(2);
-KL1 = data.KL(1);
-KL2 = data.KL(2);
-KN1 = data.Ks(1);
-KN2 = data.Ks(2);
-
 % compute ground speed
 vGround = sqrt(xeDot^2 + ynDot^2);
 
@@ -102,6 +120,7 @@ values = [sin(psiCmd) cos(psiCmd); cos(psiCmd) -1*sin(psiCmd)] * [ xe - xeCmd; y
 zeta = values(1); eta = values(2);
 
 %% Compute phi, Lbar and Tbar 
+
 % phi = bank angle, +- pi/2
 % Lbar = normalized excess thrust
 % Tbar = normalized excess thrust
