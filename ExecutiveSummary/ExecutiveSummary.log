@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.3.5)  17 DEC 2021 23:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.3.5)  18 DEC 2021 00:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -403,14 +403,14 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
 
-Underfull \hbox (badness 10000) in paragraph at lines 21--22
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
 
  []
 
 <Course1Traj.png, id=1, 453.8556pt x 189.8292pt>
 File: Course1Traj.png Graphic file (type png)
 <use Course1Traj.png>
-Package pdftex.def Info: Course1Traj.png  used on input line 26.
+Package pdftex.def Info: Course1Traj.png  used on input line 30.
 (pdftex.def)             Requested size: 226.92725pt x 94.91435pt.
 [1
 
@@ -418,53 +418,53 @@ Package pdftex.def Info: Course1Traj.png  used on input line 26.
 ng (PNG copy)>] [2]
 File: Course1Traj.png Graphic file (type png)
 <use Course1Traj.png>
-Package pdftex.def Info: Course1Traj.png  used on input line 57.
+Package pdftex.def Info: Course1Traj.png  used on input line 61.
 (pdftex.def)             Requested size: 226.92725pt x 94.91435pt.
 <Course1Score.png, id=12, 453.8556pt x 209.1012pt>
 File: Course1Score.png Graphic file (type png)
 <use Course1Score.png>
-Package pdftex.def Info: Course1Score.png  used on input line 58.
+Package pdftex.def Info: Course1Score.png  used on input line 62.
 (pdftex.def)             Requested size: 226.92725pt x 104.55034pt.
 <Course1NewTraj.png, id=13, 571.8966pt x 238.9728pt>
 File: Course1NewTraj.png Graphic file (type png)
 <use Course1NewTraj.png>
-Package pdftex.def Info: Course1NewTraj.png  used on input line 63.
+Package pdftex.def Info: Course1NewTraj.png  used on input line 67.
 (pdftex.def)             Requested size: 228.75458pt x 95.58742pt.
 <Course1NewScore.png, id=14, 571.8966pt x 263.0628pt>
 File: Course1NewScore.png Graphic file (type png)
 <use Course1NewScore.png>
-Package pdftex.def Info: Course1NewScore.png  used on input line 64.
+Package pdftex.def Info: Course1NewScore.png  used on input line 68.
 (pdftex.def)             Requested size: 228.75458pt x 105.22325pt.
 <Course2Traj.png, id=15, 453.8556pt x 189.8292pt>
 File: Course2Traj.png Graphic file (type png)
 <use Course2Traj.png>
-Package pdftex.def Info: Course2Traj.png  used on input line 69.
+Package pdftex.def Info: Course2Traj.png  used on input line 73.
 (pdftex.def)             Requested size: 226.92725pt x 94.91435pt.
 <Course2Score.png, id=16, 454.3374pt x 229.3368pt>
 File: Course2Score.png Graphic file (type png)
 <use Course2Score.png>
-Package pdftex.def Info: Course2Score.png  used on input line 70.
+Package pdftex.def Info: Course2Score.png  used on input line 74.
 (pdftex.def)             Requested size: 227.16814pt x 114.66812pt.
  [3 <./Course1Score.png (PNG copy)> <./Course1NewTraj.png (PNG copy)> <./Course
 1NewScore.png (PNG copy)>]
 <Course3Traj.png, id=21, 453.8556pt x 189.8292pt>
 File: Course3Traj.png Graphic file (type png)
 <use Course3Traj.png>
-Package pdftex.def Info: Course3Traj.png  used on input line 75.
+Package pdftex.def Info: Course3Traj.png  used on input line 79.
 (pdftex.def)             Requested size: 226.92725pt x 94.91435pt.
 <Course3Score.png, id=22, 455.301pt x 222.5916pt>
 File: Course3Score.png Graphic file (type png)
 <use Course3Score.png>
-Package pdftex.def Info: Course3Score.png  used on input line 76.
+Package pdftex.def Info: Course3Score.png  used on input line 80.
 (pdftex.def)             Requested size: 227.64993pt x 111.29552pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--81
+Underfull \hbox (badness 10000) in paragraph at lines 83--85
 
  []
 
 [4 <./Course2Traj.png (PNG copy)> <./Course2Score.png (PNG copy)> <./Course3Tra
 j.png (PNG copy)> <./Course3Score.png (PNG copy)>]
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 94
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 98
 .
 
 (c:/texlive/2019/texmf-dist/tex/latex/jknapltx/ursfs.fd
@@ -484,7 +484,7 @@ ts/cm/cmbx12.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
 i12.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c
 :/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/
 2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on ExecutiveSummary.pdf (5 pages, 729248 bytes).
+Output written on ExecutiveSummary.pdf (5 pages, 728856 bytes).
 PDF statistics:
  48 PDF objects out of 1000 (max. 8388607)
  27 compressed objects within 1 object stream
