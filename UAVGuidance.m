@@ -83,7 +83,7 @@ cmdDot = [vDotCmd;psiDotCmd;hDotCmd];
 
 
 function [vDot,psiDot] = UAVAutoTurn( state, wp, Rmin, dT )
-
+% getting varibales from input
 x0 = state(4);
 y0 = state(5);
 
